@@ -9,8 +9,8 @@ const Upload = ({ uploadTo }) => {
   const [uploading, setUploading] = useState(false)
   const [image, setImage] = useState('')
 
-  const localProgression = useSelector((state) => state.progressionStore)
-  const { progression } = localProgression
+  const getProgression = useSelector((state) => state.progressionStore)
+  const { progression } = getProgression
 
   const dispatch = useDispatch()
 

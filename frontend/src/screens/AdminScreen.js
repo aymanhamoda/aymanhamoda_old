@@ -1,18 +1,32 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Button } from 'react-bootstrap'
+import { Button, Modal } from 'react-bootstrap'
 import Upload from '../components/Upload'
+import FilePreview from '../components/FilePreview'
 
 const AdminScreen = () => {
   const [files, setFiles] = useState([])
   const [folderName, setFolderName] = useState('')
+  const [show, setShow] = useState(false)
+  const [fileToPreview, setFileToPreview] = useState('')
 
+  const handleClose = () => {
+    setShow(false)
+  }
   const handleFolderName = (f) => {
     if (folderName) {
       setFolderName(`${folderName}/${f}`)
     } else {
       setFolderName(f)
     }
+  }
+  const handleFileShow = (f) => {
+    if (folderName) {
+      setFileToPreview(`/uploads/${folderName}/${f}`)
+    } else {
+      setFileToPreview(`/uploads/${f}`)
+    }
+    setShow(true)
   }
 
   useEffect(() => {
@@ -23,22 +37,27 @@ const AdminScreen = () => {
 
   return (
     <>
+      <Modal
+        size="lg"
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}>
+        <FilePreview handleClose={handleClose} fileToPreview={fileToPreview} />
+      </Modal>
+
       <h1>Current Folder: {!folderName ? 'uploads' : folderName} </h1>
+
       <Button variant="success" onClick={() => setFolderName('')}>
         Back
       </Button>
+
       {files.map((f) => (
         <div key={f}>
           {f.search(/\./) > 0 ? (
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
+            <div
+              onClick={() => handleFileShow(f)}
               className="list-group-item list-group-item-action flex-column align-items-start"
-              href={
-                folderName
-                  ? `https://localhost:3500/uploads/${folderName}/${f}`
-                  : `http://localhost:3500/uploads/${f}`
-              }
               style={{
                 textDecoration: 'underline',
                 color: 'blue',
@@ -46,7 +65,7 @@ const AdminScreen = () => {
                 margin: '5px',
               }}>
               <h4 className="mb-1">{f} </h4>
-            </a>
+            </div>
           ) : (
             <a
               className="list-group-item list-group-item-action flex-column align-items-start"
