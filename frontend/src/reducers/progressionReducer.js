@@ -3,7 +3,7 @@ import {
   PROGRESSION_RESET,
 } from '../constants/progressionConstants'
 
-export const progressionReducer = (state = { progression: 0 }, action) => {
+export const progressionReducer = (state = { progression: 10 }, action) => {
   switch (action.type) {
     case PROGRESSION:
       return { progression: action.payload }

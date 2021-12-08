@@ -35,8 +35,6 @@ const Upload = ({ uploadTo }) => {
       formData,
       config
     )
-
-    console.log(config)
     setImage(data)
     setUploading(false)
   }

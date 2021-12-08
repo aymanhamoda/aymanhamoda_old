@@ -34,11 +34,18 @@ app.use('/api/upload', uploadRoutes)
 
 app.get('/api/uploadedfiles', (req, res) => {
   const folderName = req.query.folderPath || ''
-
   const files = fs.readdirSync(`uploads/${folderName}`)
   res.send(files)
 })
 
+app.get('/api/delete', (req, res) => {
+  const file = req.query.filePath
+  fs.unlinkSync(`.${file}`, (err) => {
+    if (err) {
+      res.send(err)
+    }
+  })
+})
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 

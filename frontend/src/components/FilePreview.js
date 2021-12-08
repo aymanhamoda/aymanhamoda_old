@@ -1,8 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { Button, Modal, Image } from 'react-bootstrap'
 import ReactPlayer from 'react-player'
+import axios from 'axios'
 
 const FilePreview = ({ fileToPreview, handleClose }) => {
+  const deleteFile = () => {
+    axios.get(`/api/delete?filePath=${fileToPreview}`)
+    handleClose()
+  }
   return (
     <div>
       <Modal.Header closeButton>
@@ -19,8 +24,8 @@ const FilePreview = ({ fileToPreview, handleClose }) => {
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" type="submit">
-          Update Changes
+        <Button variant="primary" type="submit" onClick={() => deleteFile()}>
+          Delete file
         </Button>
       </Modal.Footer>
     </div>
