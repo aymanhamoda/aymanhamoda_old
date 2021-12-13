@@ -2,18 +2,22 @@ import mongoose from 'mongoose'
 
 const youtubeSchema = mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
-      required: true,
     },
-
     url: {
       type: String,
       required: true,
     },
     description: {
       type: String,
-      required: false,
+    },
+    image: {
+      type: String,
+    },
+    views: {
+      type: Number,
+      default: 0,
     },
   },
   {

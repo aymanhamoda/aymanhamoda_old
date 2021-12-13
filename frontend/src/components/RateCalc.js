@@ -16,8 +16,9 @@ import {
 
 import drugs from '../data/drugs'
 import rateUnits from '../data/rateUnits'
-import { PlayVideo } from './PlayVideo'
+
 import { Link } from 'react-router-dom'
+import FilePreview from './FilePreview'
 
 const RateCalc = () => {
   //extract drug name into Meta keywords
@@ -37,6 +38,10 @@ const RateCalc = () => {
   const [answer3, setAnswer3] = useState('')
 
   const [show, setShow] = useState(false)
+
+  const handleClose = () => {
+    setShow(false)
+  }
 
   const calc = (e) => {
     e.preventDefault()
@@ -146,6 +151,11 @@ const RateCalc = () => {
         description="a simple tool to convert infusion rate units of specific drug to each other "
         keywords={drugName}
       />
+      <FilePreview
+        fileToPreview="/uploads/freeVideos/calc.mp4"
+        show={show}
+        handleClose={handleClose}
+      />
       <Row>
         <Col>
           <h1>Infusion Rate Converter </h1>
@@ -157,9 +167,6 @@ const RateCalc = () => {
         </Col>
       </Row>
 
-      <Modal show={show} onHide={() => setShow(false)}>
-        <PlayVideo />
-      </Modal>
       <Container>
         <Form>
           <FormGroup>

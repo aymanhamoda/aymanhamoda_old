@@ -17,10 +17,23 @@ const getYoutubeById = asyncHandler(async (req, res) => {
 
   if (youtube) {
     res.json(youtube)
+    youtube.views = youtube.views + 1
+    const updateViews = youtube.save()
   } else {
     res.status(404)
     throw new Error('Youtube not found')
   }
 })
 
-export { getYoutubes, getYoutubeById }
+const createYoutube = asyncHandler(async (req, res) => {
+  const youtube = new Youtube({
+    title: req.body.title,
+    url: req.body.url,
+    description: req.body.description,
+    image: req.body.image,
+  })
+  const createdYoutube = await youtube.save()
+  res.status(201).json(createdYoutube)
+})
+
+export { getYoutubes, getYoutubeById, createYoutube }

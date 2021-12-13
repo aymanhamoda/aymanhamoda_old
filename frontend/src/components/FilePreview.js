@@ -1,15 +1,33 @@
 import React from 'react'
+import { useState } from 'react'
 import { Button, Modal, Image } from 'react-bootstrap'
 import ReactPlayer from 'react-player'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
 
-const FilePreview = ({ fileToPreview, handleClose }) => {
+const FilePreview = ({ fileToPreview, handleClose, show }) => {
+  const [admin, setAdmin] = useState(false)
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+  if (userInfo) {
+    if (userInfo.isAdmin) {
+      setAdmin(true)
+    }
+  }
   const deleteFile = () => {
     axios.get(`/api/delete?filePath=${fileToPreview}`)
     handleClose()
   }
+
   return (
-    <div>
+    <Modal
+      size="lg"
+      show={show}
+      onHide={handleClose}
+      backdrop="static"
+      keyboard={false}>
       <Modal.Header closeButton>
         <Modal.Title>{fileToPreview}</Modal.Title>
       </Modal.Header>
@@ -24,11 +42,13 @@ const FilePreview = ({ fileToPreview, handleClose }) => {
         <Button variant="secondary" onClick={handleClose}>
           Close
         </Button>
-        <Button variant="primary" type="submit" onClick={() => deleteFile()}>
-          Delete file
-        </Button>
+        {admin && (
+          <Button variant="primary" type="submit" onClick={() => deleteFile()}>
+            Delete file
+          </Button>
+        )}
       </Modal.Footer>
-    </div>
+    </Modal>
   )
 }
 

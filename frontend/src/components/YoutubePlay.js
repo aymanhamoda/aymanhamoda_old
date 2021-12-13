@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
 import ReactPlayer from 'react-player'
-import youtubes from '../data/youtubes'
 import { Row, Col, Image, ListGroup, ListGroupItem } from 'react-bootstrap'
 
 const YoutubePlay = ({ match }) => {
@@ -8,7 +9,17 @@ const YoutubePlay = ({ match }) => {
   const [video, setVideo] = useState('')
   const [activeVideo, setActiveVideo] = useState('')
 
+  const [youtubes, setYoutubes] = useState([])
+  const [error, setError] = useState('')
+
   useEffect(() => {
+    try {
+      axios.get('/api/youtube').then((res) => setYoutubes(res.data.youtubes))
+    } catch (error) {
+      setError(error)
+      setYoutubes()
+    }
+
     if (!video) {
       setActiveVideo(videoId)
     } else {
@@ -20,12 +31,7 @@ const YoutubePlay = ({ match }) => {
     <Row>
       <Col>
         <ListGroupItem>
-          <ReactPlayer
-            width="500px"
-            playing
-            control
-            url={`https://www.youtube.com/watch?v=${activeVideo} `}
-          />
+          <ReactPlayer width="500px" playing control url={activeVideo} />
         </ListGroupItem>
       </Col>
       <Col>

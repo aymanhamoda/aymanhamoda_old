@@ -30,6 +30,7 @@ app.use('/api/youtubes', youtubeRoutes)
 app.use('/api/courses', courseRoutes)
 app.use('/api/promotions', promotionRoutes)
 app.use('/api/screenshots', screenshotRoutes)
+app.use('/api/youtube', youtubeRoutes)
 app.use('/api/upload', uploadRoutes)
 
 app.get('/api/uploadedfiles', (req, res) => {
@@ -46,6 +47,7 @@ app.get('/api/delete', (req, res) => {
     }
   })
 })
+
 const __dirname = path.resolve()
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 

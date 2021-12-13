@@ -1,30 +1,42 @@
-import React from 'react'
-import youtubes from '../data/youtubes'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 import Meta from './Meta'
-import { Image, ListGroupItem } from 'react-bootstrap'
-
+import { CardGroup, Image, ListGroup, ListGroupItem } from 'react-bootstrap'
+import ReactPlayer from 'react-player'
 import { LinkContainer } from 'react-router-bootstrap'
+import Loader from './Loader'
 
 const Youtube = ({ offMeta }) => {
+  const [youtubes, setYoutubes] = useState([])
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    try {
+      axios.get('/api/youtube').then((res) => setYoutubes(res.data.youtubes))
+    } catch (error) {
+      setError(error)
+      setYoutubes()
+    }
+  }, [error])
   return (
     <>
       {!offMeta && <Meta title="Clinical Pharmacy Youtube" />}
       <h1>Youtube</h1>
-
-      <div
-        className="row justify-content-around"
-        style={{ flexDirection: 'row' }}>
-        {youtubes.map((youtube) => (
-          <ListGroupItem style={{ pading: '5px' }} key={youtube._id}>
-            <LinkContainer to={`youtube/${youtube.url}`}>
-              <Image src={youtube.image} />
-            </LinkContainer>
-          </ListGroupItem>
-        ))}
-      </div>
-      <a href="https://www.youtube.com/channel/UCX51EQqFhYolW3-Wqo1-VRQ/">
-        <h3 style={{ textAlign: 'right', color: 'tomato' }}>See more ..</h3>{' '}
-      </a>
+      {!youtubes ? (
+        <Loader />
+      ) : (
+        <div
+          className="row justify-content-around"
+          style={{ flexDirection: 'row' }}>
+          {youtubes.map((youtube) => (
+            <ListGroupItem style={{ pading: '5px' }} key={youtube._id}>
+              <LinkContainer to={`youtube/${youtube._id}`}>
+                <Image src={youtube.image} />
+              </LinkContainer>
+            </ListGroupItem>
+          ))}
+        </div>
+      )}
     </>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Button, Modal } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import Upload from '../components/Upload'
 import FilePreview from '../components/FilePreview'
 
@@ -9,6 +10,16 @@ const AdminScreen = () => {
   const [folderName, setFolderName] = useState('')
   const [show, setShow] = useState(false)
   const [fileToPreview, setFileToPreview] = useState('')
+  const [admin, setAdmin] = useState(false)
+
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
+  if (userInfo) {
+    if (userInfo.isAdmin) {
+      setAdmin(true)
+    }
+  }
 
   const handleClose = () => {
     setShow(false)
@@ -37,14 +48,11 @@ const AdminScreen = () => {
 
   return (
     <>
-      <Modal
-        size="lg"
+      <FilePreview
+        handleClose={handleClose}
+        fileToPreview={fileToPreview}
         show={show}
-        onHide={handleClose}
-        backdrop="static"
-        keyboard={false}>
-        <FilePreview handleClose={handleClose} fileToPreview={fileToPreview} />
-      </Modal>
+      />
 
       <h1>Current Folder: {!folderName ? 'uploads' : folderName} </h1>
 
@@ -81,9 +89,7 @@ const AdminScreen = () => {
           )}
         </div>
       ))}
-      <>
-        <Upload uploadTo={folderName} />
-      </>
+      <>{admin && <Upload uploadTo={folderName} />}</>
     </>
   )
 }
