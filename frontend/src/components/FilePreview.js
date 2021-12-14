@@ -29,7 +29,7 @@ const FilePreview = ({ fileToPreview, handleClose, show, admin }) => {
         )}
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => handleClose}>
+        <Button variant="secondary" onClick={() => handleClose()}>
           Close
         </Button>
         {admin && (
