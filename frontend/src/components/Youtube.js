@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Meta from './Meta'
-import { CardGroup, Image, ListGroup, ListGroupItem } from 'react-bootstrap'
-import ReactPlayer from 'react-player'
+import { Image, ListGroupItem } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import Loader from './Loader'
 

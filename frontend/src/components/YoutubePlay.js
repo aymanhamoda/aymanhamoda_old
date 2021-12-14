@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useDispatch, useSelector } from 'react-redux'
 import ReactPlayer from 'react-player'
-import { Row, Col, Image, ListGroup, ListGroupItem } from 'react-bootstrap'
+import { Row, Col, Image, ListGroupItem } from 'react-bootstrap'
 
 const YoutubePlay = ({ match }) => {
   const videoId = match.params.id
@@ -33,19 +32,16 @@ const YoutubePlay = ({ match }) => {
         <ListGroupItem>
           <ReactPlayer width="500px" playing control url={activeVideo} />
         </ListGroupItem>
-      </Col>
-      <Col>
+
         <h1>See also</h1>
         {youtubes.map((youtube) => (
-          <ListGroup
-            key={youtube._id}
-            style={{ padding: '10px', objectFit: 'fill' }}>
+          <ListGroupItem key={youtube._id} style={{ padding: '10px' }}>
             <Image
-              onClick={() => setVideo(youtube.url)}
+              onClick={() => setVideo(youtube._id)}
               src={youtube.image}
               fluid
             />
-          </ListGroup>
+          </ListGroupItem>
         ))}
       </Col>
     </Row>

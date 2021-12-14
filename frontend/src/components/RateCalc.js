@@ -3,7 +3,6 @@ import { Typeahead } from 'react-bootstrap-typeahead'
 import Meta from './Meta'
 import {
   Form,
-  Modal,
   Row,
   Col,
   Container,

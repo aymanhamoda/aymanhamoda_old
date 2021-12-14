@@ -15,12 +15,6 @@ const AdminScreen = () => {
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
-  if (userInfo) {
-    if (userInfo.isAdmin) {
-      setAdmin(true)
-    }
-  }
-
   const handleClose = () => {
     setShow(false)
   }
@@ -41,6 +35,10 @@ const AdminScreen = () => {
   }
 
   useEffect(() => {
+    if (userInfo.isAdmin) {
+      setAdmin(true)
+    }
+
     axios
       .get(`/api/uploadedfiles?folderPath=${folderName}`)
       .then((res) => setFiles(res.data))
@@ -52,6 +50,7 @@ const AdminScreen = () => {
         handleClose={handleClose}
         fileToPreview={fileToPreview}
         show={show}
+        admin={admin}
       />
 
       <h1>Current Folder: {!folderName ? 'uploads' : folderName} </h1>
@@ -89,7 +88,7 @@ const AdminScreen = () => {
           )}
         </div>
       ))}
-      <>{admin && <Upload uploadTo={folderName} />}</>
+      {admin && <Upload uploadTo={folderName} />}
     </>
   )
 }

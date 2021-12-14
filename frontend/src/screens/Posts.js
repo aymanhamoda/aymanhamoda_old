@@ -1,17 +1,5 @@
 import React from 'react'
-import {
-  Form,
-  Modal,
-  Row,
-  Col,
-  Image,
-  Container,
-  FormGroup,
-  Button,
-  FormLabel,
-  Alert,
-  ButtonToolbar,
-} from 'react-bootstrap'
+import { Row, Col, Image } from 'react-bootstrap'
 
 export const Posts = () => {
   return (

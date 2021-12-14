@@ -1,6 +1,5 @@
 import axios from 'axios'
-import React, { useState, useEffect } from 'react'
-import Loader from '../components/Loader'
+import React, { useState } from 'react'
 import { ProgressBar, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { PROGRESSION } from '../constants/progressionConstants'
