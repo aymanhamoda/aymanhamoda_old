@@ -7,11 +7,14 @@ import Loader from './Loader'
 
 const Youtube = ({ offMeta }) => {
   const [youtubes, setYoutubes] = useState([])
+
   const [error, setError] = useState('')
 
   useEffect(() => {
     try {
-      axios.get('/api/youtube').then((res) => setYoutubes(res.data.youtubes))
+      axios
+        .get(`/api/youtube?limit=3`)
+        .then((res) => setYoutubes(res.data.youtubes))
     } catch (error) {
       setError(error)
       setYoutubes()

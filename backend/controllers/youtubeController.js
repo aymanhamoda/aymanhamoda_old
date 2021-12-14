@@ -5,7 +5,9 @@ import Youtube from '../models/youtubeModel.js'
 // @route   GET /api/teamwork
 // @access  Public
 const getYoutubes = asyncHandler(async (req, res) => {
-  const youtubes = await Youtube.find({})
+  const limit = parseInt(req.query.limit)
+  const youtubes = await Youtube.find({}).sort({ views: -1 }).limit(limit)
+
   res.json({ youtubes })
 })
 

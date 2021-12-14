@@ -23,7 +23,13 @@ const FilePreview = ({ fileToPreview, handleClose, show, admin }) => {
       </Modal.Header>
       <Modal.Body>
         {fileToPreview.search(/\.mp4/) > 0 ? (
-          <ReactPlayer url={fileToPreview} playing controls width="100%" />
+          <ReactPlayer
+            url={fileToPreview}
+            playing
+            controls
+            controlsList="nodownload"
+            width="100%"
+          />
         ) : (
           <Image src={fileToPreview} fluid />
         )}
