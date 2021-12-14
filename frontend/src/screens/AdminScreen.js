@@ -35,8 +35,10 @@ const AdminScreen = () => {
   }
 
   useEffect(() => {
-    if (userInfo.isAdmin) {
-      setAdmin(true)
+    if (userInfo) {
+      if (userInfo.isAdmin) {
+        setAdmin(true)
+      }
     }
 
     axios

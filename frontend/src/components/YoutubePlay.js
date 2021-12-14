@@ -1,47 +1,86 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import ReactPlayer from 'react-player'
-import { Row, Col, Image, ListGroupItem } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import FilePreview from './FilePreview'
+import { Row, Col, Image, ListGroup } from 'react-bootstrap'
 
 const YoutubePlay = ({ match }) => {
   const videoId = match.params.id
-  const [video, setVideo] = useState('')
-  const [activeVideo, setActiveVideo] = useState('')
 
+  const [video, setVideo] = useState('')
+  const [activeVideo, setActiveVideo] = useState(videoId)
   const [youtubes, setYoutubes] = useState([])
   const [error, setError] = useState('')
+  const [show, setShow] = useState(false)
+  const [admin, setAdmin] = useState(false)
+  const [fileToPreview, setFileToPreview] = useState('')
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
+  const handleClose = () => {
+    setShow(false)
+  }
+
+  const previewVideo = (e) => {
+    setFileToPreview(e)
+    setShow(true)
+  }
   useEffect(() => {
+    // get all videos
+
     try {
       axios.get('/api/youtube').then((res) => setYoutubes(res.data.youtubes))
     } catch (error) {
       setError(error)
-      setYoutubes()
+      setYoutubes([])
     }
-
+    // set current video ID to preview
     if (!video) {
       setActiveVideo(videoId)
     } else {
       setActiveVideo(video)
+    }
+    //get video url
+    try {
+      axios
+        .get(`/api/youtube/${activeVideo}`)
+        .then((res) => setFileToPreview(res.data.url))
+    } catch (error) {
+      setError(error)
+      setYoutubes([])
+    }
+
+    if (userInfo) {
+      if (userInfo.isAdmin) {
+        setAdmin(true)
+      }
     }
   }, [video, videoId])
 
   return (
     <Row>
       <Col>
-        <ListGroupItem>
-          <ReactPlayer width="500px" playing control url={activeVideo} />
-        </ListGroupItem>
+        <FilePreview
+          handleClose={handleClose}
+          fileToPreview={fileToPreview}
+          show={show}
+          admin={admin}
+        />
 
         <h1>See also</h1>
         {youtubes.map((youtube) => (
-          <ListGroupItem key={youtube._id} style={{ padding: '10px' }}>
-            <Image
-              onClick={() => setVideo(youtube._id)}
-              src={youtube.image}
-              fluid
-            />
-          </ListGroupItem>
+          <div
+            className="row justify-content-around"
+            style={{ flexDirection: 'row' }}>
+            <ListGroup key={youtube._id} style={{ padding: '10px' }}>
+              <Image
+                onClick={() => previewVideo(youtube.url)}
+                src={youtube.image}
+                fluid
+              />
+            </ListGroup>
+          </div>
         ))}
       </Col>
     </Row>
