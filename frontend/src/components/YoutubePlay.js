@@ -72,7 +72,6 @@ const YoutubePlay = ({ match }) => {
               <Image
                 onClick={() => previewVideo(youtube.url)}
                 src={youtube.image}
-                fluid
               />
             </ListGroup>
           </div>
