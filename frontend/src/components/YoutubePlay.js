@@ -13,6 +13,7 @@ const YoutubePlay = ({ match }) => {
   const [error, setError] = useState('')
   const [show, setShow] = useState(true)
   const [admin, setAdmin] = useState(false)
+  const [media, setMedia] = useState(false)
   const [fileToPreview, setFileToPreview] = useState('')
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -23,7 +24,8 @@ const YoutubePlay = ({ match }) => {
   }
 
   const previewVideo = (e) => {
-    setFileToPreview(e)
+    setFileToPreview(e.url)
+    setMedia(e)
     setShow(true)
   }
   useEffect(() => {
@@ -38,9 +40,7 @@ const YoutubePlay = ({ match }) => {
 
     //get video ID url
     try {
-      axios
-        .get(`/api/youtube/${activeVideo}`)
-        .then((res) => setFileToPreview(res.data.url))
+      axios.get(`/api/youtube/${activeVideo}`).then((res) => setMedia(res.data))
     } catch (error) {
       setError(error)
       setYoutubes([])
@@ -51,7 +51,7 @@ const YoutubePlay = ({ match }) => {
         setAdmin(true)
       }
     }
-  }, [videoId])
+  }, [videoId, activeVideo])
 
   return (
     <Row>
@@ -59,6 +59,7 @@ const YoutubePlay = ({ match }) => {
         <FilePreview
           handleClose={handleClose}
           fileToPreview={fileToPreview}
+          media={media}
           show={show}
           admin={admin}
         />
@@ -70,7 +71,7 @@ const YoutubePlay = ({ match }) => {
             style={{ flexDirection: 'row' }}>
             <ListGroup key={youtube._id} style={{ padding: '10px' }}>
               <Image
-                onClick={() => previewVideo(youtube.url)}
+                onClick={() => previewVideo(youtube)}
                 src={youtube.image}
               />
             </ListGroup>
