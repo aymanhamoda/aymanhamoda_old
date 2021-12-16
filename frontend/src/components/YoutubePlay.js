@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import ReactPlayer from 'react-player'
 import { useSelector } from 'react-redux'
 import FilePreview from './FilePreview'
 import { Row, Col, Image, ListGroup } from 'react-bootstrap'
@@ -13,14 +12,13 @@ const YoutubePlay = ({ match }) => {
   const [error, setError] = useState('')
   const [show, setShow] = useState(true)
   const [admin, setAdmin] = useState(false)
-  const [media, setMedia] = useState(false)
+  const [media, setMedia] = useState({})
   const [fileToPreview, setFileToPreview] = useState('')
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
   const handleClose = () => {
     setShow(false)
-    setActiveVideo('')
   }
 
   const previewVideo = (e) => {
@@ -37,10 +35,18 @@ const YoutubePlay = ({ match }) => {
       setError(error)
       setYoutubes([])
     }
-
     //get video ID url
     try {
       axios.get(`/api/youtube/${activeVideo}`).then((res) => setMedia(res.data))
+    } catch (error) {
+      setError(error)
+      setYoutubes([])
+    }
+
+    try {
+      axios
+        .get(`/api/youtube/${activeVideo}`)
+        .then((res) => setFileToPreview(res.data.url))
     } catch (error) {
       setError(error)
       setYoutubes([])
@@ -55,6 +61,7 @@ const YoutubePlay = ({ match }) => {
 
   return (
     <Row>
+      {error && <h1>{error}</h1>}
       <Col>
         <FilePreview
           handleClose={handleClose}
